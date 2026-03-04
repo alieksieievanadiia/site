@@ -1,39 +1,65 @@
 import { useState } from 'react'
 import './App.css'
 
-const recipes = {
-  natural: {
-    label: 'Natural Binder',
-    details: 'Balanced decomposition speed and stable form for transport.',
+const projectStages = {
+  concept: {
+    label: 'Concept',
+    title: 'Material direction',
+    details: 'Defined the coffee-ground base and compatible natural binders.',
   },
-  fast: {
-    label: 'Fast Compost',
-    details: 'Breaks down quicker in wet soil and warm conditions.',
+  prototype: {
+    label: 'Prototype',
+    title: 'Shape and strength',
+    details: 'Tested wall thickness, drying behavior and packaging stability.',
   },
-  durable: {
-    label: 'Durable Mix',
-    details: 'Holds shape longer for shelf life and dry storage.',
+  validation: {
+    label: 'Validation',
+    title: 'Soil and moisture tests',
+    details: 'Checked decomposition timing and seed performance in moist soil.',
   },
 }
 
-const getGrowthStage = (moisture, light) => {
-  const score = moisture * 0.55 + light * 0.45
-  if (score < 30) return 'Dormant'
-  if (score < 55) return 'Sprouting'
-  if (score < 80) return 'Leafing'
-  return 'Healthy Growth'
+const useCases = {
+  retail: {
+    label: 'Retail pack',
+    description: 'Shelf-ready small package for seed kits and gardening stores.',
+    outcome: 'Priority: long shelf life + clean presentation',
+  },
+  nursery: {
+    label: 'Nursery tray',
+    description: 'Batch format for seedling operations with faster soil transfer.',
+    outcome: 'Priority: handling speed + predictable breakdown',
+  },
+  home: {
+    label: 'Home starter',
+    description: 'Direct-to-user format focused on easy planting flow.',
+    outcome: 'Priority: simple usage + clear instructions',
+  },
 }
+
+const faqItems = [
+  {
+    id: 'water',
+    question: 'How does it react to water?',
+    answer: 'It keeps shape for handling, then gradually softens in prolonged moist conditions.',
+  },
+  {
+    id: 'time',
+    question: 'How long does decomposition take?',
+    answer: 'Timing depends on mix and environment, usually from several weeks to a few months.',
+  },
+  {
+    id: 'soil',
+    question: 'Does it affect soil quality?',
+    answer: 'The material is designed to break down into soil-friendly organic components.',
+  },
+]
 
 function App() {
   const [darkTheme, setDarkTheme] = useState(false)
-  const [moisture, setMoisture] = useState(55)
-  const [light, setLight] = useState(60)
-  const [pots, setPots] = useState(20)
-  const [recipe, setRecipe] = useState('natural')
-
-  const growthStage = getGrowthStage(moisture, light)
-  const growthPercent = Math.min(100, Math.round(moisture * 0.6 + light * 0.4))
-  const plasticSavedGrams = pots * 14
+  const [activeStage, setActiveStage] = useState('concept')
+  const [activeUseCase, setActiveUseCase] = useState('retail')
+  const [openFaq, setOpenFaq] = useState('water')
 
   return (
     <main className={`page ${darkTheme ? 'dark' : ''}`}>
@@ -100,65 +126,57 @@ function App() {
 
       <section className="interactive-grid">
         <article className="interactive-card">
-          <h3>Growth simulator</h3>
-          <label>
-            Moisture: {moisture}%
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={moisture}
-              onChange={(event) => setMoisture(Number(event.target.value))}
-            />
-          </label>
-          <label>
-            Light: {light}%
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={light}
-              onChange={(event) => setLight(Number(event.target.value))}
-            />
-          </label>
-          <div className="growth-meter" aria-hidden="true">
-            <span style={{ width: `${growthPercent}%` }} />
-          </div>
-          <strong>{growthStage}</strong>
-        </article>
-
-        <article className="interactive-card">
-          <h3>Material mix</h3>
-          <div className="recipe-buttons">
-            {Object.entries(recipes).map(([key, item]) => (
+          <h3>Project stage</h3>
+          <div className="pill-buttons">
+            {Object.entries(projectStages).map(([key, item]) => (
               <button
                 key={key}
                 type="button"
-                className={recipe === key ? 'active' : ''}
-                onClick={() => setRecipe(key)}
+                className={activeStage === key ? 'active' : ''}
+                onClick={() => setActiveStage(key)}
               >
                 {item.label}
               </button>
             ))}
           </div>
-          <p>{recipes[recipe].details}</p>
+          <h4>{projectStages[activeStage].title}</h4>
+          <p>{projectStages[activeStage].details}</p>
         </article>
 
         <article className="interactive-card">
-          <h3>Eco impact</h3>
-          <label>
-            Pots produced: {pots}
-            <input
-              type="range"
-              min="1"
-              max="500"
-              value={pots}
-              onChange={(event) => setPots(Number(event.target.value))}
-            />
-          </label>
-          <p>
-            Approximate plastic avoided: <strong>{plasticSavedGrams} g</strong>
-          </p>
+          <h3>Packaging mode</h3>
+          <div className="pill-buttons">
+            {Object.entries(useCases).map(([key, item]) => (
+              <button
+                key={key}
+                type="button"
+                className={activeUseCase === key ? 'active' : ''}
+                onClick={() => setActiveUseCase(key)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+          <p>{useCases[activeUseCase].description}</p>
+          <strong>{useCases[activeUseCase].outcome}</strong>
+        </article>
+
+        <article className="interactive-card">
+          <h3>Material FAQ</h3>
+          <div className="faq-list">
+            {faqItems.map((item) => (
+              <div key={item.id} className="faq-item">
+                <button
+                  type="button"
+                  className="faq-trigger"
+                  onClick={() => setOpenFaq((current) => (current === item.id ? '' : item.id))}
+                >
+                  {item.question}
+                </button>
+                {openFaq === item.id && <p>{item.answer}</p>}
+              </div>
+            ))}
+          </div>
         </article>
       </section>
     </main>
