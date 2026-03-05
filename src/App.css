@@ -115,6 +115,14 @@
   width: 100%;
 }
 
+.main-image {
+  width: min(620px, 100%);
+  min-height: 180px;
+  object-fit: cover;
+  border: 2px solid #b8b8b8;
+  background: var(--placeholder);
+}
+
 .image-placeholder {
   width: min(620px, 100%);
   min-height: 180px;

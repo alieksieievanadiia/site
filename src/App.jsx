@@ -98,7 +98,7 @@ function App() {
 
       <section className="single-image-wrap">
         <article className="slide">
-          <div className="image-placeholder" role="img" aria-label="Insert image here" />
+          <img className="main-image" src="images/123.jpg" alt="Packaging preview" />
         </article>
       </section>
 
