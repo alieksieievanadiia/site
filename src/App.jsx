@@ -55,31 +55,47 @@ const faqItems = [
   },
 ]
 
+const galleryImages = [
+  'images/123.jpg',
+  'images/photo_2026-03-06_00-01-29.png',
+  'images/photo_2026-03-06_00-01-40.png',
+]
+
 function App() {
   const [darkTheme, setDarkTheme] = useState(false)
   const [activeStage, setActiveStage] = useState('concept')
   const [activeUseCase, setActiveUseCase] = useState('retail')
   const [openFaq, setOpenFaq] = useState('water')
+  const [activeImage, setActiveImage] = useState(0)
+
+  const showPrevImage = () => {
+    setActiveImage((current) => (current === 0 ? galleryImages.length - 1 : current - 1))
+  }
+
+  const showNextImage = () => {
+    setActiveImage((current) => (current + 1) % galleryImages.length)
+  }
 
   return (
     <main className={`page ${darkTheme ? 'dark' : ''}`}>
       <section className="hero">
+        <button
+          className="theme-toggle"
+          onClick={() => setDarkTheme((current) => !current)}
+          type="button"
+          aria-label={darkTheme ? 'Switch to light mode' : 'Switch to dark mode'}
+          title={darkTheme ? 'Light mode' : 'Dark mode'}
+        >
+          <span className={`theme-icon ${darkTheme ? 'moon' : 'sun'}`} aria-hidden="true" />
+        </button>
+
         <div className="hero-top">
-          <div className="dot" aria-hidden="true" />
           <div className="hero-tags">
             <span>Solution</span>
             <span>Process</span>
             <span>Project</span>
           </div>
         </div>
-
-        <button
-          className="theme-toggle"
-          onClick={() => setDarkTheme((current) => !current)}
-          type="button"
-        >
-          {darkTheme ? 'Light mode' : 'Dark mode'}
-        </button>
 
         <h1>
           Coffee
@@ -97,9 +113,15 @@ function App() {
       </section>
 
       <section className="single-image-wrap">
+        <button className="image-nav" type="button" onClick={showPrevImage} aria-label="Previous image">
+          {'<'}
+        </button>
         <article className="slide">
-          <img className="main-image" src="images/123.jpg" alt="Packaging preview" />
+          <img className="main-image" src={galleryImages[activeImage]} alt="Packaging preview" />
         </article>
+        <button className="image-nav" type="button" onClick={showNextImage} aria-label="Next image">
+          {'>'}
+        </button>
       </section>
 
       <section className="mission centered-text">
