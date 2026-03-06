@@ -71,6 +71,66 @@
   letter-spacing: 0.6px;
 }
 
+.nav-tab {
+  border: 0;
+  border-radius: 999px;
+  background: #b5bab4;
+  color: #1e211d;
+  padding: 8px 24px;
+  font-family: 'Archivo', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 36px;
+  transition: background-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+
+.nav-tab.active {
+  background: #8f968e;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.view-transition {
+  will-change: opacity, transform;
+}
+
+.view-transition.is-entering {
+  animation: tabSwitchIn 0.34s cubic-bezier(0.2, 0.65, 0.2, 1) both;
+}
+
+.view-transition.is-leaving {
+  animation: tabSwitchOut 0.18s ease both;
+}
+
+@keyframes tabSwitchIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes tabSwitchOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.995);
+    filter: blur(2px);
+  }
+}
+
 .theme-toggle {
   border: 0;
   background: var(--chip-bg);
@@ -291,6 +351,117 @@
   padding: 0 12px 12px;
 }
 
+.solution-page {
+  padding: 18px 14px 28px;
+}
+
+.solution-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px;
+  font-family: 'Archivo', sans-serif;
+}
+
+.solution-card h2 {
+  margin: 0 0 12px;
+  line-height: 1.05;
+  font-size: clamp(24px, 4vw, 44px);
+}
+
+.solution-card h3 {
+  margin: 14px 0 8px;
+  font-size: clamp(16px, 2.4vw, 22px);
+}
+
+.solution-card p,
+.solution-card li {
+  color: var(--soft-ink);
+  line-height: 1.45;
+  font-size: clamp(14px, 1.5vw, 18px);
+}
+
+.solution-card ul,
+.solution-card ol {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.process-card {
+  display: grid;
+  gap: 18px;
+}
+
+.process-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.process-list strong {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: clamp(16px, 2vw, 21px);
+}
+
+.process-list p {
+  margin: 0;
+}
+
+.process-media-box {
+  border-radius: 12px;
+  background: var(--pill-bg);
+  padding: 10px 8px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 36px;
+  align-items: center;
+  gap: 8px;
+}
+
+.process-image {
+  width: 100%;
+  height: clamp(190px, 40vw, 460px);
+  object-fit: contain;
+  object-position: center;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.process-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.process-dots button {
+  border: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #b7beb4;
+  cursor: pointer;
+  padding: 0;
+}
+
+.process-dots button.active {
+  background: var(--accent);
+}
+
+.back-button {
+  margin-top: 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-family: 'Archivo', sans-serif;
+  cursor: pointer;
+}
+
 @media (min-width: 900px) {
   .main-image {
     min-height: 520px;
@@ -322,5 +493,80 @@
 
   .interactive-card {
     padding: 20px;
+  }
+
+  .solution-page {
+    padding: 24px 56px 40px;
+  }
+
+  .solution-card {
+    padding: 26px 30px;
+  }
+
+  .process-media-box {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 12px 10px 18px;
+  }
+
+  .hero-top {
+    margin-bottom: 10px;
+  }
+
+  .hero-tags {
+    gap: 6px;
+  }
+
+  .nav-tab {
+    padding: 8px 16px;
+    font-size: 11px;
+    min-height: 34px;
+  }
+
+  .theme-toggle {
+    left: 8px;
+    top: 8px;
+  }
+
+  .solution-page {
+    padding: 14px 10px 22px;
+  }
+
+  .solution-card {
+    padding: 14px;
+  }
+
+  .process-list {
+    padding-left: 16px;
+    gap: 12px;
+  }
+
+  .process-media-box {
+    grid-template-columns: 30px minmax(0, 1fr) 30px;
+    gap: 6px;
+    padding: 8px 6px;
+  }
+
+  .image-nav {
+    width: 30px;
+    height: 30px;
+    font-size: 22px;
+  }
+
+  .process-image {
+    height: clamp(200px, 62vw, 280px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view-transition,
+  .nav-tab {
+    animation: none;
+    transition: none;
   }
 }
