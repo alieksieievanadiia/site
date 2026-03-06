@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './App.css'
 
 const projectStages = {
@@ -56,23 +56,56 @@ const faqItems = [
 ]
 
 const galleryImages = [
-  'images/123.jpg',
   'images/photo_2026-03-06_00-01-29.png',
   'images/photo_2026-03-06_00-01-40.png',
 ]
 
 function App() {
+  const audioCtxRef = useRef(null)
   const [darkTheme, setDarkTheme] = useState(false)
   const [activeStage, setActiveStage] = useState('concept')
   const [activeUseCase, setActiveUseCase] = useState('retail')
   const [openFaq, setOpenFaq] = useState('water')
   const [activeImage, setActiveImage] = useState(0)
 
+  const playUiSound = (mode = 'soft') => {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext
+    if (!AudioContextClass) {
+      return
+    }
+
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new AudioContextClass()
+    }
+
+    const ctx = audioCtxRef.current
+    const now = ctx.currentTime
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    const frequency = mode === 'mode' ? 520 : 420
+    const endFrequency = mode === 'mode' ? 650 : 520
+
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(frequency, now)
+    osc.frequency.exponentialRampToValueAtTime(endFrequency, now + 0.09)
+    gain.gain.setValueAtTime(0.0001, now)
+    gain.gain.exponentialRampToValueAtTime(0.05, now + 0.02)
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.start(now)
+    osc.stop(now + 0.13)
+  }
+
   const showPrevImage = () => {
+    playUiSound('soft')
     setActiveImage((current) => (current === 0 ? galleryImages.length - 1 : current - 1))
   }
 
   const showNextImage = () => {
+    playUiSound('soft')
     setActiveImage((current) => (current + 1) % galleryImages.length)
   }
 
@@ -81,7 +114,10 @@ function App() {
       <section className="hero">
         <button
           className="theme-toggle"
-          onClick={() => setDarkTheme((current) => !current)}
+          onClick={() => {
+            playUiSound('mode')
+            setDarkTheme((current) => !current)
+          }}
           type="button"
           aria-label={darkTheme ? 'Switch to light mode' : 'Switch to dark mode'}
           title={darkTheme ? 'Light mode' : 'Dark mode'}
@@ -117,7 +153,11 @@ function App() {
           {'<'}
         </button>
         <article className="slide">
-          <img className="main-image" src={galleryImages[activeImage]} alt="Packaging preview" />
+          <img
+            className={`main-image ${activeImage === 1 ? 'main-image-featured' : ''}`}
+            src={galleryImages[activeImage]}
+            alt="Packaging preview"
+          />
         </article>
         <button className="image-nav" type="button" onClick={showNextImage} aria-label="Next image">
           {'>'}
@@ -155,7 +195,10 @@ function App() {
                 key={key}
                 type="button"
                 className={activeStage === key ? 'active' : ''}
-                onClick={() => setActiveStage(key)}
+                onClick={() => {
+                  playUiSound('mode')
+                  setActiveStage(key)
+                }}
               >
                 {item.label}
               </button>
@@ -173,7 +216,10 @@ function App() {
                 key={key}
                 type="button"
                 className={activeUseCase === key ? 'active' : ''}
-                onClick={() => setActiveUseCase(key)}
+                onClick={() => {
+                  playUiSound('mode')
+                  setActiveUseCase(key)
+                }}
               >
                 {item.label}
               </button>
@@ -191,7 +237,10 @@ function App() {
                 <button
                   type="button"
                   className="faq-trigger"
-                  onClick={() => setOpenFaq((current) => (current === item.id ? '' : item.id))}
+                  onClick={() => {
+                    playUiSound('soft')
+                    setOpenFaq((current) => (current === item.id ? '' : item.id))
+                  }}
                 >
                   {item.question}
                 </button>

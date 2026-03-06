@@ -144,7 +144,7 @@
   justify-content: center;
   gap: 12px;
   padding: 18px 12px;
-  background: var(--media-surface);
+  background: transparent;
 }
 
 .image-nav {
@@ -165,39 +165,15 @@
 }
 
 .main-image {
-  width: min(620px, 100%);
-  min-height: 180px;
-  object-fit: cover;
-  background: var(--placeholder);
+  width: min(1100px, calc(100vw - 86px));
+  min-height: 430px;
+  object-fit: contain;
+  background: transparent;
 }
 
-.image-placeholder {
-  width: min(620px, 100%);
-  min-height: 180px;
-  border: 2px dashed #b8b8b8;
-  background: var(--placeholder);
-  position: relative;
-  overflow: hidden;
-}
-
-.image-placeholder::before,
-.image-placeholder::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  background: #b8b8b8;
-  transform: translate(-50%, -50%);
-}
-
-.image-placeholder::before {
-  width: 44px;
-  height: 2px;
-}
-
-.image-placeholder::after {
-  width: 2px;
-  height: 44px;
+.main-image-featured {
+  width: min(1300px, calc(100vw - 86px));
+  min-height: 520px;
 }
 
 .centered-text {
@@ -317,7 +293,11 @@
 
 @media (min-width: 900px) {
   .main-image {
-    min-height: 260px;
+    min-height: 520px;
+  }
+
+  .main-image-featured {
+    min-height: 660px;
   }
 
   .interactive-card,
